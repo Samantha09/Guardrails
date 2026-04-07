@@ -48,6 +48,7 @@ COPY ./examples/bots /config
 # Run app.py when the container launches
 WORKDIR /nemoguardrails
 
+ENV HF_ENDPOINT=https://hf-mirror.com
 # Download the `all-MiniLM-L6-v2` model
 RUN python -c "from fastembed.embedding import FlagEmbedding; FlagEmbedding('sentence-transformers/all-MiniLM-L6-v2');"
 
