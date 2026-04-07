@@ -314,6 +314,9 @@ def _get_rails(config_ids: List[str], model_name: Optional[str] = None) -> LLMRa
     if configs_cache_key in llm_rails_instances:
         return llm_rails_instances[configs_cache_key]
 
+    # Save original config_ids before single_config_mode modifies them
+    original_config_id = config_ids[0] if config_ids else None
+
     # In single-config mode, we only load the main config directory
     if app.single_config_mode:
         if config_ids != [app.single_config_id]:
@@ -346,7 +349,7 @@ def _get_rails(config_ids: List[str], model_name: Optional[str] = None) -> LLMRa
     if full_llm_rails_config is None:
         raise ValueError("No valid rails configuration found.")
 
-    if model_name:
+    if model_name and model_name != original_config_id:
         engine = os.environ.get("MAIN_MODEL_ENGINE")
         if not engine:
             engine = "openai"
